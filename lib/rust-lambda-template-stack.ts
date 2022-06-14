@@ -23,18 +23,6 @@ export class RustLambdaTemplateStack extends Stack {
             LEARN_RUST_URL: 'https://doc.rust-lang.org',
         };
 
-        // Uncomment if you want to build (e.g. cross-compile) each target, or
-        // workspace member, individually.
-        // Settings.BUILD_INDIVIDUALLY = true;
-
-        // Uncomment to cross-compile Rust code to a different Lambda architecture.
-        // Settings.TARGET = 'x86_64-unknown-linux-gnu';
-
-        const bucket = new s3.Bucket(this, 'RustWorLambdaTemplateBucket', {
-            blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
-            publicReadAccess: false,
-        });
-
         let myLambda1 = new RustFunction(this, 'MyRustLambda1', {
             package: 'my_lambda1',
             // Useful so library logs show up in CloudWatch
@@ -43,9 +31,6 @@ export class RustLambdaTemplateStack extends Stack {
                 ENV_STR: "bar",
             },
         });
-
-        // Grant bucket read-write permissions to the first lambda
-        bucket.grantReadWrite(myLambda1);
 
         let _myLambda2 = new RustFunction(this, 'MyRustLambda2', {
             package: 'my_lambda2',
